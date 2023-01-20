@@ -1,11 +1,17 @@
 <template>
-    <SatelliteMap/>
+  <div>
+    <GeoJson />
+  </div>
 </template>
 
-<script setup>
-
-import SatelliteMap from "../src/components/SatelliteMap.vue"
-
+<script>
+import GeoJson from "./components/SatelliteMap.vue";
+export default {
+  name: "App",
+  components: {
+    GeoJson,
+  },
+};
 </script>
 
 <style>
