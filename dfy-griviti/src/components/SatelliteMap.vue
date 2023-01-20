@@ -2,19 +2,18 @@
   <div class="container">
     <div class="uploader">
       <h1>Upload a GeoJSON file</h1>
-      <input class="input" type="file" @change="onFileChange" />
+      <input class="input" ref="fileInput" type="file" @change="onFileChange" />
       <button class= 'btn' @click="submit">Submit</button>
     </div>
     <div class="map" >
       <l-map ref="map" :center="[78.44722884470269, 17.35146324412854]" v-model:zoom="zoom">
         <l-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" layer-type="base" name="OpenStreetMap"
           :center="center"></l-tile-layer>
-        <l-geo-json v-if="isData" :geojson="geojson" />
+        <l-geo-json v-if="isData" :geojson="geoJSON" />
         <l-polygon :lat-lngs="polygon.latlngs" :color="polygon.color" />
       </l-map>
     </div>
   </div>
-
 
 </template>
 
@@ -25,9 +24,10 @@ import {
   LMap,
   LTileLayer,
   LPolygon,
-  LPolyline,
   LGeoJson,
-} from "@vue-leaflet/vue-leaflet";
+  LPolyline,
+
+} from '@vue-leaflet/vue-leaflet';
 
 export default {
   components: {
@@ -161,9 +161,8 @@ export default {
             17.352440721296134
           ]
         ],
-        color: "green",
       },
-      geojson: {},
+      geoJSON: {},
     };
   },
   methods: {
@@ -176,12 +175,11 @@ export default {
         var content = reader.result;
         let mapData1 = JSON.parse(content);
         let mapData2 = JSON.parse(content);
-        this.geojson = mapData2;
+        this.geoJSON = mapData2;
         this.polygon.latlngs = mapData1.features[0].geometry.coordinates[0];
-        this.center.latlngs = mapData1.features[0].geojson.coordinates[0][0]
+        this.center = mapData1.features[0].geometry.coordinates[0][0];;
        
       };
-
       reader.readAsText(file);
     },
     submit() {
